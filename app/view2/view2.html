@@ -1,5 +1,19 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<div class="container">
+<h1>Gym with Friends: Settings</h1>
+<br/>
+<form role="form">
+	<div class="form-group">
+		<label for="gym-goal">Goal gym sessions per week</label>
+		<input type="number" class="form-control" id="gym-goal" placeholder="Input integer 1-7">
+	</div>
+	<div class="form-group">
+		<label for="payment-amount">Amount to pay in US Dollars:</label>
+		<input type="text" class="form-control" id="payment-amount" placeholder="Input amount without '$'">
+	</div>
+	<div class="form-group">
+		<label for="add-recipient">Add recipient</label>
+		<input type="search" class="form-control" id="add-recipient" placeholder="Search for friends">
+	</div>
+</form>
+<button type="submit" class="btn btn-primary">Submit</button>
+</div>

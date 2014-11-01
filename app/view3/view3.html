@@ -1,0 +1,41 @@
+<div class="container">
+<h1>Dashboard</h1>
+<br/>
+Days left: 6
+<br/>
+<h3>Your progress</h3>
+<span class="circle" id="fill"></span>
+<span class="circle" id="fill"></span>
+<span class="circle" id="fill"></span>
+<span class="circle" id="fill"></span>
+<span class="circle" id="empty"></span>
+<span class="circle" id="empty"></span>
+<span class="circle" id="empty"></span>
+<br/><br/><br/>
+<button type="button" class="btn btn-success">Complete today's goal</button>
+<br/><br/>
+<h3>Transaction History</h3>
+<div class="transaction">&#8594; 11/1/14 $10.00 to Michael Shi</div>
+</div>
+<style>
+body {
+	text-align: center;
+}
+span.circle {
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	border: 1px solid black;
+
+}
+
+#fill {
+	background-color: green;
+}
+
+#empty {
+	background-color: white;
+}
+
+</style>
