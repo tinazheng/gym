@@ -1,7 +1,8 @@
-logs/*
-!.gitkeep
-node_modules/
-bower_components/
-tmp
+/.idea
+/vendor
+/node_modules
+.env
 .DS_Store
-.idea
+Thumbs.db
+composer.lock
+composer.phar
