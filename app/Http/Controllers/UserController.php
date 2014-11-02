@@ -222,7 +222,13 @@ class UserController extends Controller {
 		return response()->json(
 			Transaction::where('user_id', $user->person_id)->orWhere('person_id', $user->person_id)->get()
 			->sortByDesc(function($transaction){ return $transaction->updated_at->getTimestamp(); })
-			->map(function($transaction){ return "On " . $transaction->updated_at->toDayDateTimeString() . ", {$transaction->user->person->name} paid \${$transaction->amount} to {$transaction->person->name}!"; })
+			->map(function($transaction) use ($user){
+				$actor = $transaction->user->person;
+				$actorName = ($actor->id == $user->person_id) ? 'I' : $actor->name;
+				$target = $transaction->person;
+				$targetName = ($target->id == $user->person_id) ? 'me' : $target->name;
+				return "On " . $transaction->updated_at->toDayDateTimeString() . ", $actorName paid \${$transaction->amount} to $targetName!";
+			})
 		);
 	}
 
