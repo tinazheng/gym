@@ -32,9 +32,10 @@
     </div>
 </div>
 <div class="submit-button-container">
-        <button type="submit" class="btn btn-primary btn-lg pull-right">Submit</button>
-    <div class="label label-danger no-friends-selected-warning pull-right   " ng-if="noFriendsSelected">You must select at least one friend</div>
-
+	<button type="submit" class="btn btn-primary btn-lg">Submit</button>
+	<div style="clear:both;">
+		<div class="label label-danger no-friends-selected-warning" ng-show="noFriendsSelected">You must select at least one friend</div>
+	</div>
 </div>
 
 </form>

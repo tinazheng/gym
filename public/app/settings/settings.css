@@ -8,11 +8,14 @@
 
 .no-friends-selected-warning{
     margin-top: 5px;
-    clear: both;
+	float: right;
+	text-align: center;
     font-size: 1em;
 }
 
 .submit-button-container{
     padding: 15px;
     width: 100%;
+	margin-bottom: 30px;
+	text-align: right;
 }

@@ -107,7 +107,7 @@ class UserController extends Controller {
 	public function friends()
 	{
 		$user = $this->auth->user();
-		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?access_token={$user->access_token}");
+		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?limit=6&access_token={$user->access_token}");
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);

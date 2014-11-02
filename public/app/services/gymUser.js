@@ -30,7 +30,11 @@ angular.module("gym")
             },
             submitSettings: function(settings){
                 return $http.put("/user",settings);
-            }
+            },
+			
+			debugPay: function(){
+				return $http.post('/user/pay');
+			}
 
         }
     });
