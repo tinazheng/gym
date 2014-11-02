@@ -1,17 +1,16 @@
 angular.module("gym")
     .controller('DashboardCtrl', function($scope, gymUser,ngToast) {
 
-        //TODO: Needs to be an API Call
-        $scope.left = 5;
         $scope.checkedIn = false;
 
-        $scope.max=14;
-
-        gymUser.getTransactionHistory()
-            .success(function(data){
-                console.log(data);
-                $scope.transHist=data;
-            });
+		$scope.updateTransHist = function(){
+			gymUser.getTransactionHistory()
+				.success(function(data){
+					$scope.transHist=data;
+				});
+		};
+		
+        $scope.updateTransHist();
 
 		$scope.setProgress = function(progress){
 			$scope.prog = progress;
@@ -27,12 +26,14 @@ angular.module("gym")
 							horizontalPosition: 'center',
 							timeout: 6000
 						});
+					$scope.updateTransHist();
 				});
 		};
 			
         gymUser.getProgress()
             .success(function(data){
                 //console.log(data);
+				$scope.max = data.goal;
                 $scope.setProgress(data.progress);
             });
 

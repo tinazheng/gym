@@ -31,7 +31,7 @@ angular.module("gym")
 
             if($scope.getSelectedFriends().length){
                 var settings = {
-                    frequency: $scope.settings.frequency,
+                    goal: $scope.settings.frequency,
                     amount: $scope.settings.amount,
                     friends: $scope.getSelectedFriends()
                 };
