@@ -1,16 +1,15 @@
 <div class="container">
-<h1>Gym with Friends: Settings</h1>
 <br/>
 <form name="settings" role="form" ng-submit="settings.$valid && submitSettings()">
 	<div class="form-group">
-		<label for="gym-goal">Goal gym sessions per week</label>
+		<h4 for="gym-goal">Goal gym sessions per week:</h4>
 		<input type="number" class="form-control" id="gym-goal"
                ng-required = 'true'
                ng-model = 'settings.frequency'
                placeholder="Recommended 3 and above">
 	</div>
 	<div class="form-group">
-		<label for="payment-amount">Amount to pay in US Dollars:</label>
+		<h4 for="payment-amount">How much are you willing to pay for not meeting the goal?:</h4>
         <div class="input-group">
             <div class="input-group-addon">$</div>
             <input type="number" class="form-control" id="payment-amount"
@@ -33,9 +32,10 @@
     </div>
 </div>
 <div class="submit-button-container">
-    <button type="submit" class="btn btn-primary" ng-click="">Submit</button>
+        <button type="submit" class="btn btn-primary btn-lg pull-right">Submit</button>
+    <div class="label label-danger no-friends-selected-warning pull-right   " ng-if="noFriendsSelected">You must select at least one friend</div>
+
 </div>
-<div class="label label-danger no-friends-selected-warning" ng-if="noFriendsSelected">You must select at least one friend</div>
 
 </form>
 

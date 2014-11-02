@@ -10,11 +10,21 @@
   <meta name="description" content="">
   <link rel="stylesheet" href="app/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="app/settings/settings.css">
+  <link rel="stylesheet" href="app/login/login.css">
+  <link rel="stylesheet" href="app/index.css">
 </head>
 <body>
+<div class="row content-container">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10 white-bg">
+        <div class="banner-container">
+            <img id='banner' src="app/assets/gym_with_friends_banner.png">
+        </div>
+        <div ui-view="content" class="content"></div>
+    </div>
+    <div class="col-xs-1"></div>
+</div>
 
-  <img id='banner' src="app/assets/gym_with_friends_banner.png">
-  <div ui-view="content" class="content"></div>
   <!--Angular Resources-->
   <script src="app/bower_components/angular/angular.js"></script>
   <script src="app/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
@@ -27,13 +37,6 @@
   <script src="app/login/login.js"></script>
   <script src="app/dashboard/dashboard.js"></script>
   <script src="app/settings/settings.js"></script>
-
-<style>
-#banner {
-  position: relative;
-  width: 80%;
-}
-</style>
 
 </body>
 
