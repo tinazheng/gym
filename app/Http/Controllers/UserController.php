@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller {
 	//TODO move this to .env
@@ -17,6 +18,7 @@ class UserController extends Controller {
 	public function __construct(Guard $auth)
 	{
 		$this->auth = $auth;
+		$this->middleware('auth', ['except' => ['create', 'store']]);
 	}
 
 	/**
@@ -45,7 +47,7 @@ class UserController extends Controller {
 	{
 		if($request->has('code'))
 		{
-			$code = $request->get('code');
+			$code = $request->input('code');
 			$curl = curl_init('https://api.venmo.com/v1/oauth/access_token');
 			curl_setopt_array($curl, array(
 				CURLOPT_RETURNTRANSFER => 1,
@@ -85,14 +87,11 @@ class UserController extends Controller {
 	public function show()
 	{
 		$user = $this->auth->user();
-		if(!is_null($user))
-		{
-			$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}?access_token={$user->access_token}");
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			$result = curl_exec($curl);
-			curl_close($curl);
-			if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
-		}
+		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}?access_token={$user->access_token}");
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		curl_close($curl);
+		if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
 		return new Response('Error!', 500);
 	}
 
@@ -102,27 +101,66 @@ class UserController extends Controller {
 	public function friends()
 	{
 		$user = $this->auth->user();
-		if(!is_null($user))
-		{
-			$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?access_token={$user->access_token}");
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			$result = curl_exec($curl);
-			curl_close($curl);
-			if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
-		}
+		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?access_token={$user->access_token}");
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		curl_close($curl);
+		if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
 		return new Response('Error!', 500);
 	}
 
 	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @Put("/user")
 	 */
-	public function update($id)
+	public function update(Request $request)
 	{
-		//
+		$user = $this->auth->user();
+		if($request->has('goal')) $user->goal = $request->input('goal');
+		$user->save();
+
+		$amount = $request->input('amount', 0);
+		if($request->has('friends'))
+		{
+			$venmoIds = $request->input('friends');
+			$people = new Collection;
+			foreach($venmoIds as $venmoId)
+			{
+				$person = Person::whereVenmoId($venmoId)->first();
+				if(is_null($person))
+				{
+					$curl = curl_init("https://api.venmo.com/v1/users/$venmoId?access_token={$user->access_token}");
+					curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+					$result = curl_exec($curl);
+					if($result !== false)
+					{
+						$result = json_decode($result);
+						$person = new Person;
+						$person->venmo_id = $venmoId;
+						$person->name = $result->data->display_name;
+						$person->profile_picture_url = $result->data->profile_picture_url;
+						$person->save();
+						$people->push($person);
+					}else
+					{
+						dd("Could not retrieve data about friend with id $venmoId");
+					}
+				}
+			}
+		}else
+		{
+			$people = $user->friends;
+		}
+		if($people->count() > 0)
+		{
+			$personIds = $people->map(function($person){ return $person->id; });
+			$user->friends()->sync(array_combine(
+				$personIds->all(),
+				array_fill(0, $personIds->count(), array('amount' => $amount))
+			));
+		}
+		return new Response(null, 204);
 	}
+
 
 	/**
 	 * Remove the specified resource from storage.

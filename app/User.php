@@ -20,4 +20,9 @@ class User extends Model implements UserContract{
 	{
 		return $this->belongsTo('App\Person');
 	}
+
+	public function friends()
+	{
+		return $this->belongsToMany('App\Person', 'pays')->withPivot('amount');
+	}
 }
