@@ -3,7 +3,7 @@
     <h2>Days Left: {{left}}</h2>
 
     <h2>Your Progress:</h2>
-    <span class="circle fill" ng-repeat="n in [] | range:prog"></span><!--
+    <span class="circle fill" ng-class="{red: n<max/3, yellow: n<2*max/3, green: n>=2*max/3}" ng-repeat="n in [] | range:prog"></span><!--
 --><span class="circle empty" ng-repeat="n in [] | range:antiProg"></span>
 
     <div class="checkIn-button-container">
@@ -28,12 +28,20 @@ span.circle {
 
 }
 
-.circle.fill {
+.circle.fill.red {
+	background-color: red;
+}
+.circle.fill.yellow {
+	background-color: yellow;
+}
+.circle.fill.green {
 	background-color: green;
 }
 
 .circle.empty {
 	background-color: white;
 }
+
+
 
 </style>

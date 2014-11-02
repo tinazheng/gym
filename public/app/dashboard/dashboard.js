@@ -5,6 +5,8 @@ angular.module("gym")
         $scope.left = 5;
         $scope.checkedIn = false;
 
+        $scope.max=14;
+
         gymUser.getTransactionHistory()
             .success(function(data){
                 console.log(data);
@@ -15,7 +17,7 @@ angular.module("gym")
             .success(function(data){
                 console.log(data);
                 $scope.prog=data;
-                $scope.antiProg = 7-data;
+                $scope.antiProg = $scope.max-data;
             });
 
         $scope.checkIn = function(){
