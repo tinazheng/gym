@@ -5,7 +5,6 @@ var gym = angular.module('gym', ['ui.router','ui.bootstrap']);
 //Angular UI Router Config
 gym.config(function($logProvider, $urlRouterProvider, $stateProvider){
 
-    //TODO: Remove Debugging
     $logProvider.debugEnabled(true);
     $urlRouterProvider.otherwise('/');
     $stateProvider
@@ -18,5 +17,26 @@ gym.config(function($logProvider, $urlRouterProvider, $stateProvider){
                     controller: 'LoginCtrl'
                 }
             }
-        });
+        })
+        .state('settings', {
+            url: '/settings',
+            title: 'Gym!',
+            views: {
+                'content':{
+                    templateUrl: 'app/settings/settings.html',
+                    controller: 'SettingsCtrl'
+                }
+            }
+        })
+        .state('dashboard', {
+            url: '/dashboard',
+            title: 'Gym!',
+            views: {
+                'content':{
+                    templateUrl: 'app/dashboard/dashboard.html',
+                    controller: 'DashboardCtrl'
+                }
+            }
+        })
+    ;
 });

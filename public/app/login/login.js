@@ -1,5 +1,9 @@
 angular.module("gym")
-    .controller('LoginCtrl', [function($scope) {
-    console.log('From Login Ctrl');
+    .controller('LoginCtrl', function($scope,gymUser) {
+        console.log('From Login Ctrl');
 
-}]);
+        gymUser.getUser()
+            .success(function(data){
+               console.log(data);
+            });
+});
