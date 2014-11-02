@@ -1,16 +1,16 @@
 <div class="container">
 <h1>Dashboard</h1>
 <br/>
-Days left: 6
+Days left: 7
 <br/>
 <h3>Your progress</h3>
-<span class="circle" id="fill"></span>
-<span class="circle" id="fill"></span>
-<span class="circle" id="fill"></span>
-<span class="circle" id="fill"></span>
-<span class="circle" id="empty"></span>
-<span class="circle" id="empty"></span>
-<span class="circle" id="empty"></span>
+<span class="circle fill" ng-repeat="n in [] | range:6"></span>
+<!--<span class="circle fill"></span>
+<span class="circle fill"></span>
+<span class="circle fill"></span>
+<span class="circle empty"></span>
+<span class="circle empty"></span>
+<span class="circle empty"></span>-->
 <br/><br/><br/>
 <button type="button" class="btn btn-success">Complete today's goal</button>
 <br/><br/>
@@ -30,11 +30,11 @@ span.circle {
 
 }
 
-#fill {
+.circle.fill {
 	background-color: green;
 }
 
-#empty {
+.circle.empty {
 	background-color: white;
 }
 
