@@ -6,7 +6,11 @@ angular.module("gym")
         return {
 
             getUser: function(){
-                return $http.get("https://api.venmo.com/v1/me?access_token="+"kcrf6dZ3TrvBWEGsnxuVnFJfCZwH2ePS");
+                return $http.get("/users/me");
+            },
+
+            listFriends: function(){
+              return $http.get("/users/friends")
             }
 
         }

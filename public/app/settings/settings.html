@@ -10,11 +10,14 @@
 		<label for="payment-amount">Amount to pay in US Dollars:</label>
 		<input type="text" class="form-control" id="payment-amount" placeholder="Input amount without '$'">
 	</div>
-	<div class="form-group">
-		<label for="add-recipient">Add recipient</label>
-        <button type="button" class="=btn btn-success" ng-click="listFriends()">Add Friends</button>
-		<input type="search" class="form-control" id="add-recipient" placeholder="Search for friends">
-	</div>
 </form>
+
+    <div class="friends-list">
+        <div ng-repeat="friend in friends" class="friend-list-item>">
+
+            {{friend.first_name}}
+        </div>
+    </div>
+
 <button type="submit" class="btn btn-primary">Submit</button>
 </div>
