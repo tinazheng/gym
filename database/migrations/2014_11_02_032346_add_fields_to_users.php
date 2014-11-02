@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordRemindersTable extends Migration {
+class AddFieldsToUsers extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,10 @@ class CreatePasswordRemindersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('password_reminders', function(Blueprint $table)
+		Schema::table('users', function($t)
 		{
-			$table->string('email')->index();
-			$table->string('token')->index();
-			$table->timestamp('created_at');
+			$t->string('access_token', 100);
+			$t->string('refresh_token', 100);
 		});
 	}
 
@@ -27,7 +26,11 @@ class CreatePasswordRemindersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('password_reminders');
+		Schema::table('users', function($t)
+		{
+			$t->dropColumn('access_token');
+			$t->dropColumn('refresh_token');
+		});
 	}
 
 }

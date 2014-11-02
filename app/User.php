@@ -3,25 +3,31 @@
 use Illuminate\Auth\UserTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\User as UserContract;
-use Illuminate\Auth\Passwords\CanResetPasswordTrait;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements UserContract, CanResetPasswordContract {
+class User extends Model implements UserContract{
 
-	use UserTrait, CanResetPasswordTrait;
+	use UserTrait;
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'users';
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $primaryKey = 'person_id';
 
+	protected $fillable = array('person_id');
+
+	public $timestamps = false;
+
+	public function person()
+	{
+		return $this->belongsTo('App\Person');
+	}
+
+	public function friends()
+	{
+		return $this->belongsToMany('App\Person', 'pays')->withPivot('amount');
+	}
+
+	public function transactions()
+	{
+		return $this->hasMany('App\Transaction');
+	}
 }

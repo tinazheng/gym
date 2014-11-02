@@ -6,19 +6,19 @@ angular.module("gym")
         return {
 
             getUser: function(){
-                return $http.get("/users/me");
+                return $http.get("/user");
             },
 
             listFriends: function(){
-              return $http.get("/users/friends");
+              return $http.get("/user/friends");
             },
 
             getProgress: function(){
-                return $http.get("/users/progress");
+                return $http.get("/user/progress");
             },
 
             getTransactionHistory: function(){
-                return $http.get("/users/transactions");
+                return $http.get("/user/transactions");
             },
 
             pushCheckIn: function(long,lat){
@@ -29,8 +29,7 @@ angular.module("gym")
                     });
             },
             submitSettings: function(settings){
-                //TODO: Should be PUT
-                return $http.get("/user",settings);
+                return $http.put("/user",settings);
             }
 
         }
