@@ -1,7 +1,9 @@
 <div class="container">
 
-    <h2>Days Left: {{left}}</h2>
+    <h2>Days left:</h2>
+    <div class="clock" style="margin:0 auto;height:90px;overflow:hidden;margin-top:15px;">
 
+    </div>
     <h2>Your Progress:</h2>
     <span class="circle fill" ng-class="{one: n<=max/3, two: n<2*max/5 && n>max/5,three: n<3*max/5 && 2*n>max/5,
       four: n<4*max/3 && 3*n>max/3, five: n>=4*max/3}" ng-repeat="n in [] | range:prog"></span><!--
@@ -16,6 +18,28 @@
     <div class="transaction" ng-repeat="trans in transHist" ng-bind="trans">&#8594; 11/1/14 $10.00 to Michael Shi</div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    var clock;
+
+    clock = $('.clock').FlipClock({
+      clockFace: 'DailyCounter',
+      autoStart: false,
+      showSeconds: false,
+      showMinutes:false,
+      callbacks: {
+        stop: function() {
+          $('.message').html('The clock has stopped!')
+        }
+      }
+    });
+
+    clock.setTime(220880);
+    clock.setCountdown(true);
+    clock.start();
+
+  });
+</script>
 <style>
 body {
 	text-align: center;
@@ -48,7 +72,13 @@ span.circle {
 .circle.empty {
 	background-color: lightgrey;
 }
-
+ul{
+  white-space: nowrap;
+}
+  ul.flip{
+    width:50px;
+    height:80px;
+  }
 
 
 </style>
