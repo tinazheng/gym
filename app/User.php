@@ -3,12 +3,10 @@
 use Illuminate\Auth\UserTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\User as UserContract;
-use Illuminate\Auth\Passwords\CanResetPasswordTrait;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements UserContract, CanResetPasswordContract {
+class User extends Model implements UserContract{
 
-	use UserTrait, CanResetPasswordTrait;
+	use UserTrait;
 
 	/**
 	 * The database table used by the model.
@@ -22,6 +20,6 @@ class User extends Model implements UserContract, CanResetPasswordContract {
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = [];
 
 }
