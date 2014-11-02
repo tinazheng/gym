@@ -25,4 +25,9 @@ class User extends Model implements UserContract{
 	{
 		return $this->belongsToMany('App\Person', 'pays')->withPivot('amount');
 	}
+
+	public function transactions()
+	{
+		return $this->hasMany('App\Transaction');
+	}
 }

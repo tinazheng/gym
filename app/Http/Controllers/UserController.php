@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Person;
+use App\Transaction;
 use App\User;
 use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -91,7 +92,7 @@ class UserController extends Controller {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);
-		if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
+		if($result !== false) return (new Response($result, 200))->header('Content-Type', 'application/json');
 		return new Response('Error!', 500);
 	}
 
@@ -105,7 +106,7 @@ class UserController extends Controller {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);
-		if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
+		if($result !== false) return (new Response($result, 200))->header('Content-Type', 'application/json');
 		return new Response('Error!', 500);
 	}
 
@@ -161,6 +162,67 @@ class UserController extends Controller {
 		return new Response(null, 204);
 	}
 
+	/**
+	 * @Post("/user/pay")
+	 */
+	public function pay()
+	{
+		$user = $this->auth->user();
+		foreach($user->friends as $friend)
+		{
+			//the sandbox "payment" is always identical so there is no point using it
+			/*
+			//using sandbox since I don't want to donate $100 to mike
+			$curl = curl_init('https://sandbox-api.venmo.com/v1/payments');
+			curl_setopt_array($curl, array(
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_POST => 1,
+				CURLOPT_POSTFIELDS => array(
+					'access_token' => $user->access_token,
+					'note' => 'for not meeting gym goal',
+//					'amount' => $friend->pivot->amount,
+					'amount' => 0.10,
+					'user_id' => '145434160922624933'
+				)
+			));
+			$result = curl_exec($curl);
+			curl_close($curl);
+			if($result !== false)
+			{
+				$result = json_decode($result); dd($result->data);
+				if(!property_exists($result, 'error'))
+				{
+					continue;
+				}
+			}
+			 */
+			$transaction = new Transaction;
+			$transaction->user_id = $user->person_id;
+			$transaction->person_id = $friend->id;
+			$transaction->amount = $friend->pivot->amount;
+			$transaction->save();
+		}
+
+		return new Response(null, 204);
+	}
+
+	/**
+	 * @Get("/user/transactions")
+	 */
+	public function transactions()
+	{
+		$user = $this->auth->user();
+		return response()->json($user->transactions->map(function($transaction){ return "{$transaction->user->person->name} --\${$transaction->amount}--> {$transaction->person->name} (hi Mike)"; }));
+	}
+
+	/**
+	 * @Get("/user/goal")
+	 */
+	public function goal()
+	{
+		$user = $this->auth->user();
+		return response()->json(array('goal' => $user->goal));
+	}
 
 	/**
 	 * Remove the specified resource from storage.
