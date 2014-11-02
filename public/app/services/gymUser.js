@@ -27,7 +27,7 @@ angular.module("gym")
                         longitude:long,
                         latitude:lat
                     });
-            }
+            },
             submitSettings: function(settings){
                 //TODO: Should be PUT
                 return $http.get("/user",settings);
