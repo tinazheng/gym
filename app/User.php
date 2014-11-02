@@ -8,18 +8,16 @@ class User extends Model implements UserContract{
 
 	use UserTrait;
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'users';
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [];
+	protected $primaryKey = 'person_id';
 
+	protected $fillable = array('person_id');
+
+	public $timestamps = false;
+
+	public function person()
+	{
+		return $this->belongsTo('Person');
+	}
 }
