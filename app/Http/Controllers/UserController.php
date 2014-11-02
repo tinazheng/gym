@@ -38,7 +38,7 @@ class UserController extends Controller {
 	public function create()
 	{
 		//technically login should be not be the same as registering i think..oh well
-		return response()->redirectGuest('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_profile%20access_friends&response_type=code');
+		return response()->redirectTo('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_profile%20access_friends&response_type=code');
 	}
 
 	/**
@@ -75,12 +75,17 @@ class UserController extends Controller {
 					$user->refresh_token = $result->refresh_token;
 					$user->save();
 					$this->auth->login($user);
-					return response()->redirectToIntended();
+					return response()->redirectTo('/#/settings');
 				}
 			}
 		}
 		return new Response('Could not log in!', 401);
 	}
+
+	/**
+	 * @Get("/forcelogin")
+	 */
+	public function forceLogin(){ $this->auth->login(User::first()); }
 
 	/**
 	 * @Get("/user")
@@ -102,7 +107,7 @@ class UserController extends Controller {
 	public function friends()
 	{
 		$user = $this->auth->user();
-		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?access_token={$user->access_token}");
+		$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?limit=6&access_token={$user->access_token}");
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);
@@ -168,6 +173,7 @@ class UserController extends Controller {
 	public function pay()
 	{
 		$user = $this->auth->user();
+		$total = 0;
 		foreach($user->friends as $friend)
 		{
 			//the sandbox "payment" is always identical so there is no point using it
@@ -201,9 +207,10 @@ class UserController extends Controller {
 			$transaction->person_id = $friend->id;
 			$transaction->amount = $friend->pivot->amount;
 			$transaction->save();
+			$total += $friend->pivot->amount;
 		}
 
-		return new Response(null, 204);
+		return response()->json(array('paid' => $total));
 	}
 
 	/**
@@ -218,10 +225,23 @@ class UserController extends Controller {
 	/**
 	 * @Get("/user/progress")
 	 */
-	public function progress()
+	public function getProgress()
 	{
 		$user = $this->auth->user();
 		return response()->json(array('progress' => $user->progress));
+	}
+
+	/**
+	 * @Post("/user/checkin")
+	 */
+	public function checkIn()
+	{
+		$user = $this->auth->user();
+		//"verify user location is near a gym"
+		//we are near a gym
+		$user->progress++;
+		$user->save();
+		return response()->json($user);
 	}
 
 	/**

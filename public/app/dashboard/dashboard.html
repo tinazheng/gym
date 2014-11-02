@@ -13,6 +13,8 @@
         <button type="button" class="btn btn-success" ng-click="checkIn()" ng-if="!checkedIn">Complete today's goal</button>
         <button type="button" class="btn btn-success disabled" ng-if="checkedIn">Check back tomorrow</button>
     </div>
+	
+	<button type="button" class="btn btn-danger" ng-click="debugPay()">Debug Payment</button>
 
     <h2>Payment History:</h2>
     <div class="transaction" ng-repeat="trans in transHist" ng-bind="trans">&#8594; 11/1/14 $10.00 to Michael Shi</div>
