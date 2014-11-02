@@ -6,12 +6,18 @@ angular.module("gym")
         return {
 
             getUser: function(){
-                return $http.get("/users/me");
+                return $http.get("/user/me");
             },
 
             listFriends: function(){
-              return $http.get("/users/friends")
+              return $http.get("/user/friends")
+            },
+
+            submitSettings: function(settings){
+                //TODO: Should be PUT
+                return $http.get("/user",settings);
             }
+
 
         }
     });

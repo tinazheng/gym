@@ -1,23 +1,42 @@
 <div class="container">
 <h1>Gym with Friends: Settings</h1>
 <br/>
-<form role="form">
+<form name="settings" role="form" ng-submit="settings.$valid && submitSettings()">
 	<div class="form-group">
 		<label for="gym-goal">Goal gym sessions per week</label>
-		<input type="number" class="form-control" id="gym-goal" placeholder="Input integer 1-7">
+		<input type="number" class="form-control" id="gym-goal"
+               ng-required = 'true'
+               ng-model = 'settings.frequency'
+               placeholder="Recommended 3 and above">
 	</div>
 	<div class="form-group">
 		<label for="payment-amount">Amount to pay in US Dollars:</label>
-		<input type="text" class="form-control" id="payment-amount" placeholder="Input amount without '$'">
+        <div class="input-group">
+            <div class="input-group-addon">$</div>
+            <input type="number" class="form-control" id="payment-amount"
+                   ng-required = 'true'
+                   ng-model = 'settings.amount'
+                   placeholder="10.00">
+        </div>
 	</div>
+
+<h4>Choose friends you want to pay:</h4>
+<div class="list-group">
+    <div ng-repeat="friend in friends track by $index" class="list-group-item friend-item"
+            ng-class="{'active': friend.selected}"
+            ng-click="selectFriend($index)"
+            >
+
+        <img class="img-rounded" src="{{friend.profile_picture_url}}">
+        <span class="friend-name" ng-bind="friend.display_name"></span>
+
+    </div>
+</div>
+<div class="submit-button-container">
+    <button type="submit" class="btn btn-primary" ng-click="">Submit</button>
+</div>
+<div class="label label-danger no-friends-selected-warning" ng-if="noFriendsSelected">You must select at least one friend</div>
+
 </form>
 
-    <div class="friends-list">
-        <div ng-repeat="friend in friends" class="friend-list-item>">
-
-            {{friend.first_name}}
-        </div>
-    </div>
-
-<button type="submit" class="btn btn-primary">Submit</button>
 </div>

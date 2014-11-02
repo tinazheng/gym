@@ -1,7 +1,16 @@
-.friends-list{
-    background-color: black;
+.friend-name{
+    padding-left: 3px;
 }
 
-.friends-list-item{
+.friend-item{
+    cursor: pointer;
+}
 
+.no-friends-selected-warning{
+    margin-top: 5px;
+    clear: both;
+}
+
+.submit-button-container{
+    margin: 5px auto;
 }

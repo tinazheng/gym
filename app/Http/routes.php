@@ -2,7 +2,7 @@
 
 $router->get('/', function(){ return file_get_contents(__DIR__ . '/../../public/app/index.html'); });
 
-Route::get('/users/me',function(){
+Route::get('/user/me',function(){
     return response()->json(array(
         'data'=>array(
             'balance'=>102.3,
@@ -24,7 +24,7 @@ Route::get('/users/me',function(){
     ));
 });
 
-Route::get('/users/friends',function(){
+Route::get('/user/friends',function(){
    return response()->json(array(
 
        "pagination"=>array(
@@ -68,5 +68,11 @@ Route::get('/users/friends',function(){
              "id"=>"161568197181440668"
             )
         )
+   ));
+});
+
+Route::get('/user',function(){
+   return response()->json(array(
+      'status'=>true
    ));
 });
