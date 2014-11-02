@@ -16,8 +16,9 @@ angular.module("gym")
         gymUser.getProgress()
             .success(function(data){
                 console.log(data);
-                $scope.prog=data;
-                $scope.antiProg = $scope.max-data;
+                var progress = data.progress;
+                $scope.prog = progress;
+                $scope.antiProg = $scope.max - progress;
             });
 
         $scope.checkIn = function(){

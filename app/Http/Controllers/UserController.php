@@ -216,12 +216,12 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * @Get("/user/goal")
+	 * @Get("/user/progress")
 	 */
-	public function goal()
+	public function progress()
 	{
 		$user = $this->auth->user();
-		return response()->json(array('goal' => $user->goal));
+		return response()->json(array('progress' => $user->progress));
 	}
 
 	/**
