@@ -3,7 +3,8 @@
     <h2>Days Left: {{left}}</h2>
 
     <h2>Your Progress:</h2>
-    <span class="circle fill" ng-class="{red: n<max/3, yellow: n<2*max/3, green: n>=2*max/3}" ng-repeat="n in [] | range:prog"></span><!--
+    <span class="circle fill" ng-class="{one: n<=max/3, two: n<2*max/5 && n>max/5,three: n<3*max/5 && 2*n>max/5,
+      four: n<4*max/3 && 3*n>max/3, five: n>=4*max/3}" ng-repeat="n in [] | range:prog"></span><!--
 --><span class="circle empty" ng-repeat="n in [] | range:antiProg"></span>
 
     <div class="checkIn-button-container">
@@ -28,18 +29,24 @@ span.circle {
 
 }
 
-.circle.fill.red {
-	background-color: red;
+.circle.fill.one {
+	background-color: #3fc380;
 }
-.circle.fill.yellow {
-	background-color: yellow;
+.circle.fill.two {
+	background-color: #03a678;
 }
-.circle.fill.green {
-	background-color: green;
+.circle.fill.three {
+	background-color: #16A085;
+}
+.circle.fill.four {
+	background-color: #019875;
+}
+.circle.fill.five {
+	background-color: #049372;
 }
 
 .circle.empty {
-	background-color: white;
+	background-color: lightgrey;
 }
 
 

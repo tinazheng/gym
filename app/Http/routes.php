@@ -30,7 +30,7 @@ Route::get('/users/transactions',function(){
 });
 
 Route::get('/users/progress',function(){
-    return response()->json(4);
+    return response()->json(12);
 });
 
 Route::get('/users/friends',function(){
