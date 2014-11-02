@@ -38,7 +38,7 @@ class UserController extends Controller {
 	public function create()
 	{
 		//technically login should be not be the same as registering i think..oh well
-		return response()->redirectGuest('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_profile%20access_friends&response_type=code');
+		return response()->redirectTo('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_profile%20access_friends&response_type=code');
 	}
 
 	/**
@@ -75,12 +75,17 @@ class UserController extends Controller {
 					$user->refresh_token = $result->refresh_token;
 					$user->save();
 					$this->auth->login($user);
-					return response()->redirectToIntended();
+					return response()->redirectTo('/#/settings');
 				}
 			}
 		}
 		return new Response('Could not log in!', 401);
 	}
+
+	/**
+	 * @Get("/forcelogin")
+	 */
+	public function forceLogin(){ $this->auth->login(User::first()); }
 
 	/**
 	 * @Get("/user")
