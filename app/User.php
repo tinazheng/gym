@@ -12,6 +12,8 @@ class User extends Model implements UserContract{
 
 	protected $primaryKey = 'person_id';
 
+	protected $visible = array('person_id', 'goal', 'progress');
+
 	protected $fillable = array('person_id');
 
 	public $timestamps = false;

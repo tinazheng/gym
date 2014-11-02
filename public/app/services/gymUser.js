@@ -22,7 +22,7 @@ angular.module("gym")
             },
 
             pushCheckIn: function(long,lat){
-                return $http.post('/user/checkIn',
+                return $http.post('/user/checkin',
                     {
                         longitude:long,
                         latitude:lat

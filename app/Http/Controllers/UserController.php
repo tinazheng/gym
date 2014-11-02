@@ -218,10 +218,23 @@ class UserController extends Controller {
 	/**
 	 * @Get("/user/progress")
 	 */
-	public function progress()
+	public function getProgress()
 	{
 		$user = $this->auth->user();
 		return response()->json(array('progress' => $user->progress));
+	}
+
+	/**
+	 * @Post("/user/checkin")
+	 */
+	public function checkIn()
+	{
+		$user = $this->auth->user();
+		//"verify user location is near a gym"
+		//we are near a gym
+		$user->progress++;
+		$user->save();
+		return response()->json($user);
 	}
 
 	/**
