@@ -145,12 +145,12 @@ class UserController extends Controller {
 						$person->name = $result->data->display_name;
 						$person->profile_picture_url = $result->data->profile_picture_url;
 						$person->save();
-						$people->push($person);
 					}else
 					{
 						dd("Could not retrieve data about friend with id $venmoId");
 					}
 				}
+				$people->push($person);
 			}
 		}else
 		{
@@ -219,7 +219,11 @@ class UserController extends Controller {
 	public function transactions()
 	{
 		$user = $this->auth->user();
-		return response()->json($user->transactions->map(function($transaction){ return "{$transaction->user->person->name} --\${$transaction->amount}--> {$transaction->person->name} (hi Mike)"; }));
+		return response()->json(
+			Transaction::where('user_id', $user->person_id)->orWhere('person_id', $user->person_id)->get()
+			->sortByDesc(function($transaction){ return $transaction->updated_at->getTimestamp(); })
+			->map(function($transaction){ return "On " . $transaction->updated_at->toDayDateTimeString() . ", {$transaction->user->person->name} paid \${$transaction->amount} to {$transaction->person->name}!"; })
+		);
 	}
 
 	/**
@@ -228,7 +232,7 @@ class UserController extends Controller {
 	public function getProgress()
 	{
 		$user = $this->auth->user();
-		return response()->json(array('progress' => $user->progress));
+		return response()->json(array('progress' => $user->progress, 'goal' => $user->goal));
 	}
 
 	/**
@@ -239,7 +243,7 @@ class UserController extends Controller {
 		$user = $this->auth->user();
 		//"verify user location is near a gym"
 		//we are near a gym
-		$user->progress++;
+		$user->progress = min($user->goal, $user->progress + 1);
 		$user->save();
 		return response()->json($user);
 	}
