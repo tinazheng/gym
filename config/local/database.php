@@ -23,7 +23,7 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'homestead',
+			'database'  => 'homestead_gym',
 			'username'  => 'homestead',
 			'password'  => 'secret',
 			'charset'   => 'utf8',
