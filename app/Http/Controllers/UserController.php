@@ -3,6 +3,7 @@
 use App\Person;
 use App\User;
 use Illuminate\Routing\Controller;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -10,6 +11,13 @@ class UserController extends Controller {
 	//TODO move this to .env
 	const CLIENT_ID = 2065;
 	const CLIENT_SECRET = 'rygvBxweYnSmsSxfuWJVAsNvkmZeVmkz';
+
+	protected $auth;
+
+	public function __construct(Guard $auth)
+	{
+		$this->auth = $auth;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -27,7 +35,7 @@ class UserController extends Controller {
 	public function create()
 	{
 		//technically login should be not be the same as registering i think..oh well
-		return response()->redirectGuest('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_friends&response_type=code');
+		return response()->redirectGuest('https://api.venmo.com/v1/oauth/authorize?client_id=' . static::CLIENT_ID . '&scope=make_payments%20access_profile%20access_friends&response_type=code');
 	}
 
 	/**
@@ -63,6 +71,7 @@ class UserController extends Controller {
 					$user->access_token = $result->access_token;
 					$user->refresh_token = $result->refresh_token;
 					$user->save();
+					$this->auth->login($user);
 					return response()->redirectToIntended();
 				}
 			}
@@ -71,25 +80,37 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @Get("/user")
 	 */
-	public function show($id)
+	public function show()
 	{
-		//
+		$user = $this->auth->user();
+		if(!is_null($user))
+		{
+			$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}?access_token={$user->access_token}");
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$result = curl_exec($curl);
+			curl_close($curl);
+			if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
+		}
+		return new Response('Error!', 500);
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @Get("/user/friends")
 	 */
-	public function edit($id)
+	public function friends()
 	{
-		//
+		$user = $this->auth->user();
+		if(!is_null($user))
+		{
+			$curl = curl_init("https://api.venmo.com/v1/users/{$user->person->venmo_id}/friends?access_token={$user->access_token}");
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$result = curl_exec($curl);
+			curl_close($curl);
+			if($result) return (new Response($result, 200))->header('Content-Type', 'application/json');
+		}
+		return new Response('Error!', 500);
 	}
 
 	/**

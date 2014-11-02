@@ -18,6 +18,6 @@ class User extends Model implements UserContract{
 
 	public function person()
 	{
-		return $this->belongsTo('Person');
+		return $this->belongsTo('App\Person');
 	}
 }
