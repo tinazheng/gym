@@ -173,6 +173,7 @@ class UserController extends Controller {
 	public function pay()
 	{
 		$user = $this->auth->user();
+		$total = 0;
 		foreach($user->friends as $friend)
 		{
 			//the sandbox "payment" is always identical so there is no point using it
@@ -206,9 +207,10 @@ class UserController extends Controller {
 			$transaction->person_id = $friend->id;
 			$transaction->amount = $friend->pivot->amount;
 			$transaction->save();
+			$total += $friend->pivot->amount;
 		}
 
-		return new Response(null, 204);
+		return response()->json(array('paid' => $total));
 	}
 
 	/**
