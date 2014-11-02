@@ -28,6 +28,10 @@ angular.module("gym")
                         latitude:lat
                     });
             }
+            submitSettings: function(settings){
+                //TODO: Should be PUT
+                return $http.get("/user",settings);
+            }
 
         }
     });
