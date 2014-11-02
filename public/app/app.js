@@ -1,6 +1,6 @@
 'use strict';
 
-var gym = angular.module('gym', ['ui.router','ui.bootstrap']);
+var gym = angular.module('gym', ['ui.router','ui.bootstrap','ngToast']);
 
 gym.run(function ($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;

@@ -1,6 +1,10 @@
 angular.module("gym")
-    .controller('DashboardCtrl', function($scope, gymUser) {
-        console.log('From Dashboard Ctrl');
+    .controller('DashboardCtrl', function($scope, gymUser,ngToast) {
+
+        //TODO: Needs to be an API Call
+        $scope.left = 5;
+        $scope.checkedIn = false;
+
         gymUser.getTransactionHistory()
             .success(function(data){
                 console.log(data);
@@ -15,9 +19,20 @@ angular.module("gym")
             });
 
         $scope.checkIn = function(){
-            console.log("Checked In!");
+
+            //TODO: Should be in success
+            ngToast.create({
+                content: 'Congrats! You have accomplished your goal today!',
+                horizontalPosition: 'center',
+                timeout: 6000
+            });
+            $scope.checkedIn = true;
+
             navigator.geolocation.getCurrentPosition(function(position){
-                gymUser.pushCheckIn(position.coords.longitude, position.coords.latitude);
+                gymUser.pushCheckIn(position.coords.longitude, position.coords.latitude)
+                    .success(function(data){
+
+                    });
             });
         };
     });
