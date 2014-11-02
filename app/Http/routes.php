@@ -24,6 +24,15 @@ Route::get('/users/me',function(){
     ));
 });
 
+Route::get('/users/transactions',function(){
+    return response()->json(array('asdfasdfasdfasdfaw3raw3rawr3', 'asdfasdfasdf','124124'));
+
+});
+
+Route::get('/users/progress',function(){
+    return response()->json(4);
+});
+
 Route::get('/users/friends',function(){
    return response()->json(array(
 

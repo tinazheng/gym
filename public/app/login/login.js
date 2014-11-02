@@ -6,4 +6,6 @@ angular.module("gym")
             .success(function(data){
                console.log(data);
             });
+
+
 });

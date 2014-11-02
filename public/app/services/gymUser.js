@@ -10,7 +10,23 @@ angular.module("gym")
             },
 
             listFriends: function(){
-              return $http.get("/users/friends")
+              return $http.get("/users/friends");
+            },
+
+            getProgress: function(){
+                return $http.get("/users/progress");
+            },
+
+            getTransactionHistory: function(){
+                return $http.get("/users/transactions");
+            },
+
+            pushCheckIn: function(long,lat){
+                return $http.post('/user/checkIn',
+                    {
+                        longitude:long,
+                        latitude:lat
+                    });
             }
 
         }

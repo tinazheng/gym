@@ -4,18 +4,13 @@
 Days left: 7
 <br/>
 <h3>Your progress</h3>
-<span class="circle fill" ng-repeat="n in [] | range:6"></span>
-<!--<span class="circle fill"></span>
-<span class="circle fill"></span>
-<span class="circle fill"></span>
-<span class="circle empty"></span>
-<span class="circle empty"></span>
-<span class="circle empty"></span>-->
+<span class="circle fill" ng-repeat="n in [] | range:prog"></span><!--
+--><span class="circle empty" ng-repeat="n in [] | range:antiProg"></span>
 <br/><br/><br/>
-<button type="button" class="btn btn-success">Complete today's goal</button>
+<button type="button" class="btn btn-success" ng-click="checkIn()">Complete today's goal</button>
 <br/><br/>
 <h3>Transaction History</h3>
-<div class="transaction">&#8594; 11/1/14 $10.00 to Michael Shi</div>
+<div class="transaction" ng-repeat="trans in transHist" ng-bind="trans">&#8594; 11/1/14 $10.00 to Michael Shi</div>
 </div>
 <style>
 body {
